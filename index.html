@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Juego</title>
+    <style>
+        body { 
+            margin: 0;
+        }
+        canvas {
+            display: block;
+            background: #000; 
+        }
+    </style>
+</head>
+<body>
+    <canvas id="espacio"></canvas>
+    <img src="nave.png" id="nave" style="display: none;">
+    <script>
+        var fondo = document.getElementById('espacio');
+        var ctx = fondo.getContext('2d');
+        var imgNave = document.getElementById('nave');
+
+        fondo.width = window.innerWidth;
+        fondo.height = window.innerHeight;
+
+        var nave = {
+            x: fondo.width / 2,
+            y: fondo.height / 2,
+            velocidad: 30
+        };
+
+        function estrellas(cantidad) {
+            for (var i = 0; i < cantidad; i++) {
+                var x = Math.random() * fondo.width;
+                var y = Math.random() * fondo.height;
+                var tamaño = Math.random() * 3;
+                var brillo = Math.random() * 255;
+                ctx.beginPath();
+                ctx.arc(x, y, tamaño, 0, Math.PI * 2, false);
+                if((i%3)==0){
+                    ctx.fillStyle = "rgba( 150, 0, 255, " + brillo + ")";
+                }
+                else if((i%2)==0){
+                    ctx.fillStyle = "rgba(255, 255, 255, " + brillo + ")";
+                }
+                else{
+                    ctx.fillStyle = "rgba(150, 150, 0, " + brillo + ")";
+                }
+                ctx.fill();
+            }
+        }
+
+        function dibujarNave() {
+            ctx.drawImage(imgNave, nave.x, nave.y, 100, 100);
+        }
+
+        window.addEventListener('keydown', function(e) {
+            ctx.clearRect(nave.x, nave.y, 100, 100);
+            if (e.key === 'ArrowRight') {
+                nave.x += nave.velocidad;
+            } else if (e.key === 'ArrowLeft') {
+                nave.x -= nave.velocidad;
+            } else if (e.key === 'ArrowUp') {
+                nave.y -= nave.velocidad;
+            } else if (e.key === 'ArrowDown') {
+                nave.y += nave.velocidad;
+            }
+            dibujarNave();
+        });
+        estrellas(700);
+        dibujarNave();
+    </script>
+</body>
+</html>
+
