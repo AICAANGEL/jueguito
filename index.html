@@ -26,7 +26,8 @@
         var nave = {
             x: fondo.width / 2,
             y: fondo.height / 2,
-            velocidad: 30
+            velocidad: 10,
+            angulo: 0 // Nuevo atributo para el ángulo de la nave
         };
 
         function estrellas(cantidad) {
@@ -51,25 +52,34 @@
         }
 
         function dibujarNave() {
-            ctx.drawImage(imgNave, nave.x, nave.y, 100, 100);
+            ctx.save(); // Guarda el estado actual del contexto
+            ctx.translate(nave.x, nave.y); // Mueve el contexto al lugar de la nave
+            ctx.rotate(nave.angulo * Math.PI / 180); // Rota el contexto al ángulo actual de la nave
+            ctx.drawImage(imgNave, -50, -50, 100, 100); // Dibuja la nave centrada en el contexto rotado
+            ctx.restore(); // Restaura el estado del contexto
         }
 
         window.addEventListener('keydown', function(e) {
-            ctx.clearRect(nave.x, nave.y, 100, 100);
+            ctx.clearRect(nave.x - 50, nave.y - 50, 100, 100); // Limpia la posición actual de la nave
             if (e.key === 'ArrowRight') {
                 nave.x += nave.velocidad;
+                nave.angulo = 90; // Rota la nave a la derecha
             } else if (e.key === 'ArrowLeft') {
                 nave.x -= nave.velocidad;
+                nave.angulo = -90; // Rota la nave a la izquierda
             } else if (e.key === 'ArrowUp') {
                 nave.y -= nave.velocidad;
+                nave.angulo = 0; // Mantiene la nave hacia arriba
             } else if (e.key === 'ArrowDown') {
                 nave.y += nave.velocidad;
+                nave.angulo = 180; // Rota la nave hacia abajo
             }
             dibujarNave();
         });
+
         estrellas(700);
         dibujarNave();
+
     </script>
 </body>
 </html>
-
